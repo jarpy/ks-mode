@@ -17,7 +17,7 @@
         "edit" "else" "file" "for" "from" "global" "if" "in" "is"
         "list" "local" "lock" "log" "not" "off" "or" "on" "parameter"
         "preserve" "print" "reboot" "remove" "rename" "run" "set"
-        "shutdown" "stage" "step" "switch" "then" "to" "toggle"
+        "shutdown" "step" "switch" "then" "to" "toggle"
         "unlock" "unset" "until" "volume" "wait" "when")
   "List of Kerboscript keywords for ks-mode.")
 
@@ -40,6 +40,8 @@
 (defvar ks-font-locks
   `(( "declare function \\([^ ]*\\)" . (1 font-lock-function-name-face))
     ( "@lazyglobal off" . font-lock-warning-face)
+    ( "\\(\\_<stage\\_>\\):"        . (1 font-lock-constant-face))
+    ( "\\(\\_<stage\\_>\\)[^:]"     . (1 font-lock-keyword-face))
     ( ,(ks-regexp-opt ks-keywords)  . font-lock-keyword-face)
     ( ,(ks-regexp-opt ks-builtins)  . font-lock-builtin-face)
     ( ,(ks-regexp-opt ks-variables) . font-lock-constant-face)))
