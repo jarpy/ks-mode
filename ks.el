@@ -50,6 +50,7 @@
   "A major mode for editing Kerboscript files."
   :syntax-table ks-mode-syntax-table
   (setq-local font-lock-defaults '(ks-font-locks nil t))
+  (if (featurep 'rainbow-delimiters) (rainbow-delimiters-mode-enable))
 )
 
 (provide 'ks)
