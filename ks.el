@@ -41,14 +41,14 @@
   (regexp-opt keywords 'symbols))
 
 (defvar ks-font-locks
-  `(( "//.*" . font-lock-comment-face)
-    ( "function \\([^ ]*\\)" . (1 font-lock-function-name-face))
-    ( "@lazyglobal off" . font-lock-warning-face)
+  `(( "//.*"                        . font-lock-comment-face)
+    ( "function \\([^ ]*\\)"        . (1 font-lock-function-name-face))
+    ( "@lazyglobal off"             . font-lock-warning-face)
     ( "\\(\\_<stage\\_>\\):"        . (1 font-lock-type-face))
     ( "\\(\\_<stage\\_>\\)[^:]"     . (1 font-lock-keyword-face))
     ( ,(ks-regexp-opt ks-keywords)  . font-lock-keyword-face)
-    ( ,(ks-regexp-opt ks-types)  . font-lock-type-face)
-    ( ,(ks-regexp-opt ks-functions)  . font-lock-builtin-face)
+    ( ,(ks-regexp-opt ks-types)     . font-lock-type-face)
+    ( ,(ks-regexp-opt ks-functions) . font-lock-builtin-face)
     ( ,(ks-regexp-opt ks-variables) . font-lock-constant-face)))
 
 (define-derived-mode ks-mode fundamental-mode "ks"
