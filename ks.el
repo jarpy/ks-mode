@@ -13,12 +13,12 @@
 
 (defvar ks-keywords
   (list "@lazyglobal" "add" "all" "and" "at" "batch" "break"
-        "clearscreen" "compile" "copy" "declare" "delete" "deploy"
-        "do" "edit" "else" "file" "for" "from" "global" "if" "in"
-        "list" "local" "lock" "log" "not" "off" "or" "on" "parameter"
-        "preserve" "print" "reboot" "remove" "rename" "run" "set"
-        "shutdown" "stage" "step" "switch" "then" "to" "toggle"
-        "unlock" "unset" "until" "volume" "wait" "when")
+        "clearscreen" "compile" "copy" "declare" "declare function"
+        "delete" "deploy" "do" "edit" "else" "file" "for" "from"
+        "global" "if" "in" "list" "local" "lock" "log" "not" "off"
+        "or" "on" "parameter" "preserve" "print" "reboot" "remove"
+        "rename" "run" "set" "shutdown" "stage" "step" "switch" "then"
+        "to" "toggle" "unlock" "unset" "until" "volume" "wait" "when")
   "List of Kerboscript keywords for ks-mode.")
 
 (defvar ks-builtins
@@ -35,8 +35,10 @@
   "Make an optimized regexp from the list of KEYWORDS."
   (regexp-opt keywords 'words))
 
+;; (defun ks-)
+
 (defvar ks-font-locks
-  `(( "declare function \\([^ ]\\)" . font-lock-function-name-face)
+  `(( "declare function \\([^ ]*\\)" . (1 font-lock-function-name-face))
     ( ,(ks-regexp-opt ks-keywords)  . font-lock-keyword-face)
     ( ,(ks-regexp-opt ks-builtins)  . font-lock-builtin-face)
     ( ,(ks-regexp-opt ks-variables) . font-lock-constant-face)))
