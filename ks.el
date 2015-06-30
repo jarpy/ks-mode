@@ -22,8 +22,8 @@
   "List of Kerboscript keywords for ks-mode.")
 
 (defvar ks-types
-  (list "sas" "throttle" "ship" "altitude" "apoapsis" "periapsis"
-        "steering" )
+  (list "altitude" "apoapsis" "periapsis" "sas" "ship" "steering"
+        "throttle" )
   "List of Kerboscript structure names for ks-mode.")
 
 (defvar ks-functions
