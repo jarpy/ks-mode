@@ -11,25 +11,21 @@
     st)
   "Syntax table for `ks-mode'.")
 
-(defvar ks-keywords (list "@lazyglobal" "add" "all" "and" "at" "batch"
-                              "break" "clearscreen" "compile" "copy" "declare"
-                              "delete" "deploy" "do" "edit" "else" "file" "for"
-                              "from" "global" "if" "in" "list" "local" "lock"
-                              "log" "not" "off" "or" "on" "parameter" "preserve"
-                              "print" "reboot" "remove" "rename" "run" "set"
-                              "shutdown" "stage" "step" "switch" "then" "to"
-                              "toggle" "unlock" "unset" "until" "volume" "wait"
-                              "when")
+(defvar ks-keywords (list "@lazyglobal" "add" "all" "and" "at" "batch" "break"
+                     "clearscreen" "compile" "copy" "declare" "delete" "deploy"
+                     "do" "edit" "else" "file" "for" "from" "global" "if" "in"
+                     "list" "local" "lock" "log" "not" "off" "or" "on"
+                     "parameter" "preserve" "print" "reboot" "remove" "rename"
+                     "run" "set" "shutdown" "stage" "step" "switch" "then" "to"
+                     "toggle" "unlock" "unset" "until" "volume" "wait" "when")
   "List of Ks keywords for ks-mode.")
 
-(defvar ks-builtins (list "abs" "arccos" "arcsin" "arctan" "arctan2"
-                              "ceiling" "constant" "cos" "floor" "ln" "log10"
-                              "max" "min" "mod" "random" "round" "sin" "sin"
-                              "sort" "tan")
+(defvar ks-builtins (list "abs" "arccos" "arcsin" "arctan" "arctan2" "ceiling"
+                     "constant" "cos" "floor" "ln" "log10" "max" "min" "mod"
+                     "random" "round" "sin" "sin" "sort" "tan")
   "List of Ks built-in functions.")
 
-(defvar ks-variables (list "apoapsis" "false" "periapsis" "ship"
-                                    "true")
+(defvar ks-variables (list "apoapsis" "false" "periapsis" "ship" "true")
   "List of Ks variables that are always available.")
 
 (defun ks-regexp-opt (keywords)
