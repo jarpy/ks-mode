@@ -13,37 +13,42 @@
 
 (defvar ks-keywords
   (list "add" "all" "and" "at" "batch" "break" "clearscreen" "compile"
-        "copy" "declare" "declare function" "delete" "deploy" "do"
-        "edit" "else" "file" "for" "from" "global" "if" "in" "is"
-        "list" "local" "lock" "log" "not" "off" "or" "on" "parameter"
-        "preserve" "print" "reboot" "remove" "rename" "run" "set"
-        "shutdown" "step" "switch" "then" "to" "toggle"
-        "unlock" "unset" "until" "volume" "wait" "when")
+        "copy" "declare" "delete" "deploy" "do" "edit" "else" "file"
+        "for" "from" "function" "global" "if" "in" "is" "list" "local"
+        "lock" "log" "not" "off" "or" "on" "parameter" "preserve"
+        "print" "reboot" "remove" "rename" "run" "set" "shutdown"
+        "step" "switch" "then" "to" "toggle" "unlock" "unset" "until"
+        "volume" "wait" "when")
   "List of Kerboscript keywords for ks-mode.")
 
-(defvar ks-builtins
+(defvar ks-types
+  (list "sas" "throttle" "ship" "altitude" "apoapsis" "periapsis"
+        "steering" )
+  "List of Kerboscript structure names for ks-mode.")
+
+(defvar ks-functions
   (list "abs" "arccos" "arcsin" "arctan" "arctan2" "ceiling"
         "constant" "cos" "floor" "ln" "log10" "max" "min" "mod"
-        "random" "round" "sin" "sort" "tan")
+        "node" "random" "round" "sin" "sort" "tan")
   "List of Kerboscript built-in functions for ks-mode.")
 
 (defvar ks-variables
-  (list "apoapsis" "false" "periapsis" "ship" "true")
-  "List of Kerboscript public variables for ks-mode.")
+  (list "false" "true")
+  "List of Kerboscript built-in variables for ks-mode.")
 
 (defun ks-regexp-opt (keywords)
   "Make an optimized regexp from the list of KEYWORDS."
   (regexp-opt keywords 'symbols))
 
-;; (defun ks-)
-
 (defvar ks-font-locks
-  `(( "declare function \\([^ ]*\\)" . (1 font-lock-function-name-face))
+  `(( "//.*" . font-lock-comment-face)
+    ( "function \\([^ ]*\\)" . (1 font-lock-function-name-face))
     ( "@lazyglobal off" . font-lock-warning-face)
-    ( "\\(\\_<stage\\_>\\):"        . (1 font-lock-constant-face))
+    ( "\\(\\_<stage\\_>\\):"        . (1 font-lock-type-face))
     ( "\\(\\_<stage\\_>\\)[^:]"     . (1 font-lock-keyword-face))
     ( ,(ks-regexp-opt ks-keywords)  . font-lock-keyword-face)
-    ( ,(ks-regexp-opt ks-builtins)  . font-lock-builtin-face)
+    ( ,(ks-regexp-opt ks-types)  . font-lock-type-face)
+    ( ,(ks-regexp-opt ks-functions)  . font-lock-builtin-face)
     ( ,(ks-regexp-opt ks-variables) . font-lock-constant-face)))
 
 (define-derived-mode ks-mode fundamental-mode "ks"
