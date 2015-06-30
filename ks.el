@@ -14,8 +14,8 @@
 (defvar ks-keywords
   (list "add" "all" "and" "at" "batch" "break" "clearscreen" "compile"
         "copy" "declare" "declare function" "delete" "deploy" "do"
-        "edit" "else" "file" "for" "from" "global" "if" "in" "list"
-        "local" "lock" "log" "not" "off" "or" "on" "parameter"
+        "edit" "else" "file" "for" "from" "global" "if" "in" "is"
+        "list" "local" "lock" "log" "not" "off" "or" "on" "parameter"
         "preserve" "print" "reboot" "remove" "rename" "run" "set"
         "shutdown" "stage" "step" "switch" "then" "to" "toggle"
         "unlock" "unset" "until" "volume" "wait" "when")
