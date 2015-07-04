@@ -23,7 +23,7 @@
 
 (defvar ks-types
   (list  "sas" "steering" "throttle" )
-  "List of Kerboscript structure names for ks-mode.")
+  "List of special Kerboscript types for ks-mode.")
 
 (defvar ks-functions
   (list "abs" "arccos" "arcsin" "arctan" "arctan2" "ceiling"
