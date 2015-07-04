@@ -6,8 +6,8 @@
 
 (defvar ks-mode-syntax-table
   (let ((st (make-syntax-table)))
-    (modify-syntax-entry ?# "<" st)
-    (modify-syntax-entry ?\n ">" st)
+    (modify-syntax-entry ?/ ". 124b" st)
+    (modify-syntax-entry ?\n "> b" st)
     st)
   "Syntax table for `ks-mode'.")
 
@@ -22,8 +22,7 @@
   "List of Kerboscript keywords for ks-mode.")
 
 (defvar ks-types
-  (list "altitude" "apoapsis" "periapsis" "sas" "ship" "steering"
-        "throttle" )
+  (list  "sas" "steering" "throttle" )
   "List of Kerboscript structure names for ks-mode.")
 
 (defvar ks-functions
@@ -32,24 +31,41 @@
         "node" "random" "round" "sin" "sort" "tan")
   "List of Kerboscript built-in functions for ks-mode.")
 
-(defvar ks-variables
+(defvar ks-constants
   (list "false" "true")
-  "List of Kerboscript built-in variables for ks-mode.")
+  "List of Kerboscript constants for ks-mode.")
+
+(let
+    ((orbitable-suffixes
+      (list "altitude" "apoapsis" "body" "direction" "distance"
+            "geoposition" "hasbody" "hasobt" "hasorbit" "latitude"
+            "longitude" "name" "north" "obt" "patches" "periapsis"
+            "position" "prograde" "retrograde" "ship" "srfprograde"
+            "srfretrograde" "the" "up" "velocity" ))
+     (orbit-suffixes
+      (list "apoapsis" "argumentofperiapsis" "body" "eccentricity"
+            "hasnextpatch" "inclination" "lan"
+            "longitudeofascendingnode" "meananomalyatepoch" "name"
+            "nextpatch" "periapsis" "period" "position"
+            "semimajoraxis" "semiminoraxis" "transition" "trueanomaly"
+            "velocity")))
+  (defvar ks-variables (delete-dups (append orbitable-suffixes orbit-suffixes))
+    "List of known Kerboscript variables and structure suffixes for ks-mode."))
 
 (defun ks-regexp-opt (keywords)
   "Make an optimized regexp from the list of KEYWORDS."
   (regexp-opt keywords 'symbols))
 
 (defvar ks-font-locks
-  `(( "//.*"                        . font-lock-comment-face)
-    ( "function \\([^ ]*\\)"        . (1 font-lock-function-name-face))
+  `(( "function \\([^ ]*\\)"        . (1 font-lock-function-name-face))
     ( "@lazyglobal off"             . font-lock-warning-face)
-    ( "\\(\\_<stage\\_>\\):"        . (1 font-lock-type-face))
+    ( "\\(\\_<stage\\_>\\):"        . (1 font-lock-variable-name-face))
     ( "\\(\\_<stage\\_>\\)[^:]"     . (1 font-lock-keyword-face))
-    ( ,(ks-regexp-opt ks-keywords)  . font-lock-keyword-face)
-    ( ,(ks-regexp-opt ks-types)     . font-lock-type-face)
     ( ,(ks-regexp-opt ks-functions) . font-lock-builtin-face)
-    ( ,(ks-regexp-opt ks-variables) . font-lock-constant-face)))
+    ( ,(ks-regexp-opt ks-keywords)  . font-lock-keyword-face)
+    ( ,(ks-regexp-opt ks-variables) . font-lock-variable-name-face)
+    ( ,(ks-regexp-opt ks-types)     . font-lock-type-face)
+    ( ,(ks-regexp-opt ks-constants) . font-lock-constant-face)))
 
 (define-derived-mode ks-mode fundamental-mode "ks"
   "A major mode for editing Kerboscript files."
