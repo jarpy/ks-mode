@@ -16,9 +16,9 @@
         "copy" "declare" "delete" "deploy" "do" "edit" "else" "file"
         "for" "from" "function" "global" "if" "in" "is" "list" "local"
         "lock" "log" "not" "off" "or" "on" "parameter" "preserve"
-        "print" "reboot" "remove" "rename" "run" "set" "shutdown"
-        "step" "switch" "then" "to" "toggle" "unlock" "unset" "until"
-        "volume" "wait" "when")
+        "print" "reboot" "remove" "rename" "return" "run" "set"
+        "shutdown" "step" "switch" "then" "to" "toggle" "unlock"
+        "unset" "until" "volume" "wait" "when")
   "List of Kerboscript keywords for ks-mode.")
 
 (defvar ks-types
@@ -78,10 +78,11 @@
     (indent-line-to indent)))
 
 (defun ks-previous-indentation ()
-  "Get the indentation of the previous non-blank line of Kerboscript."
+  "Get the indentation of the previous non-blank, non-comment line of Kerboscript."
   (save-excursion
     (forward-line -1)
-    (while (looking-at "[[:space:]]*$")
+    (while (and (looking-at "[[:space:]]*\\(//.*\\)?$")
+                (not (bobp)))
       (forward-line -1))
     (current-indentation)))
 
@@ -90,9 +91,8 @@
   (let ((indentation (ks-previous-indentation))
         (significant-earlier-line nil)
         (opening-brace ".*{[[:space:]]*\\(//.*\\)?$")
-        (closing-brace "[[:space:]]*}\\.?\\(//.*\\)?$")
-        (statement-end ".*\\.\\(//.*\\)?$")
-        (nothing-special "[^.{}]*$")
+        (closing-brace ".*}")
+        (statement-end ".*\\.[[:space:]]*\\(//.*\\)?$")
         (blank-line "[[:space:]]*$"))
     (save-excursion
       (beginning-of-line)
@@ -106,9 +106,6 @@
               (setq indentation (+ indentation ks-indent))
               (setq significant-earlier-line t)))
         (if (looking-at statement-end)
-            (progn
-              (setq significant-earlier-line t)))
-        (if (looking-at nothing-special)
             (setq significant-earlier-line t))
         (if (bobp)
             (progn
