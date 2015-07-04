@@ -78,7 +78,7 @@
     (indent-line-to indent)))
 
 (defun ks-previous-indentation ()
-  "Get the indentation of the previous non-blank line."
+  "Get the indentation of the previous non-blank line of Kerboscript."
   (save-excursion
     (forward-line -1)
     (while (looking-at "[[:space:]]*$")
@@ -87,24 +87,34 @@
 
 (defun ks-indent-line ()
   "Indent a line of Kerboscript."
-  (let ((indentation (ks-previous-indentation)) (significant-earlier-line nil))
+  (let ((indentation (ks-previous-indentation))
+        (significant-earlier-line nil)
+        (opening-brace ".*{[[:space:]]*\\(//.*\\)?$")
+        (closing-brace "[[:space:]]*}\\.?\\(//.*\\)?$")
+        (statement-end ".*\\.\\(//.*\\)?$")
+        (nothing-special "[^.{}]*$")
+        (blank-line "[[:space:]]*$"))
     (save-excursion
       (beginning-of-line)
-      (if (looking-at "[[:space:]]*}$")
+      (if (looking-at closing-brace)
           (setq indentation (- indentation ks-indent))))
     (save-excursion
       (while (not significant-earlier-line)
         (forward-line -1)
-        (if (looking-at ".*then {$")
+        (if (looking-at opening-brace)
             (progn
               (setq indentation (+ indentation ks-indent))
               (setq significant-earlier-line t)))
-        (if (looking-at ".*\\.$")
+        (if (looking-at statement-end)
             (progn
               (setq significant-earlier-line t)))
+        (if (looking-at nothing-special)
+            (setq significant-earlier-line t))
         (if (bobp)
-            (setq significant-earlier-line t))))
-    (if (looking-at "[[:space:]]*$")
+            (progn
+              (setq indentation 0)
+              (setq significant-earlier-line t)))))
+    (if (looking-at blank-line)
         (indent-line-to 0)
       (indent-line-to (max indentation 0)))))
 
