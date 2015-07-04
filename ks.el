@@ -1,4 +1,4 @@
-;;; ks -- Major mode for Kerboscript.
+;;; ks -- Major mode for Kerboscript.  -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 
