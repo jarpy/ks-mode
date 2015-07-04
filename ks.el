@@ -41,7 +41,7 @@
             "geoposition" "hasbody" "hasobt" "hasorbit" "latitude"
             "longitude" "name" "north" "obt" "patches" "periapsis"
             "position" "prograde" "retrograde" "ship" "srfprograde"
-            "srfretrograde" "the" "up" "velocity" ))
+            "srfretrograde" "the" "up" "velocity"))
      (orbit-suffixes
       (list "apoapsis" "argumentofperiapsis" "body" "eccentricity"
             "hasnextpatch" "inclination" "lan"
@@ -67,12 +67,53 @@
     ( ,(ks-regexp-opt ks-types)     . font-lock-type-face)
     ( ,(ks-regexp-opt ks-constants) . font-lock-constant-face)))
 
+(defvar ks-indent 2
+  "Indentation size for ks-mode.")
+
+(defun ks-indent-line-number (line-number indent)
+  "Indent the line at LINE-NUMBER to INDENT."
+  (save-excursion
+    (goto-char (point-min))
+    (forward-line (1- line-number))
+    (indent-line-to indent)))
+
+(defun ks-previous-indentation ()
+  "Get the indentation of the previous non-blank line."
+  (save-excursion
+    (forward-line -1)
+    (while (looking-at "[[:space:]]*$")
+      (forward-line -1))
+    (current-indentation)))
+
+(defun ks-indent-line ()
+  "Indent a line of Kerboscript."
+  (let ((indentation (ks-previous-indentation)) (significant-earlier-line nil))
+    (save-excursion
+      (beginning-of-line)
+      (if (looking-at "[[:space:]]*}$")
+          (setq indentation (- indentation ks-indent))))
+    (save-excursion
+      (while (not significant-earlier-line)
+        (forward-line -1)
+        (if (looking-at ".*then {$")
+            (progn
+              (setq indentation (+ indentation ks-indent))
+              (setq significant-earlier-line t)))
+        (if (looking-at ".*\\.$")
+            (progn
+              (setq significant-earlier-line t)))
+        (if (bobp)
+            (setq significant-earlier-line t))))
+    (if (looking-at "[[:space:]]*$")
+        (indent-line-to 0)
+      (indent-line-to (max indentation 0)))))
+
 (define-derived-mode ks-mode fundamental-mode "ks"
   "A major mode for editing Kerboscript files."
   :syntax-table ks-mode-syntax-table
   (setq-local font-lock-defaults '(ks-font-locks nil t))
-  (if (featurep 'rainbow-delimiters) (rainbow-delimiters-mode-enable))
-)
+  (setq-local indent-line-function 'ks-indent-line)
+  (if (featurep 'rainbow-delimiters) (rainbow-delimiters-mode-enable)))
 
 (provide 'ks)
 ;;; ks.el ends here
