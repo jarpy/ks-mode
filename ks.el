@@ -22,7 +22,7 @@
   "List of Kerboscript keywords for ks-mode.")
 
 (defvar ks-types
-  (list  "sas" "steering" "throttle" )
+  (list  "sas" "steering" "throttle")
   "List of special Kerboscript types for ks-mode.")
 
 (defvar ks-functions
@@ -36,19 +36,19 @@
   "List of Kerboscript constants for ks-mode.")
 
 (let
-    ((orbitable-suffixes
-      (list "altitude" "apoapsis" "body" "direction" "distance"
-            "geoposition" "hasbody" "hasobt" "hasorbit" "latitude"
-            "longitude" "name" "north" "obt" "patches" "periapsis"
-            "position" "prograde" "retrograde" "ship" "srfprograde"
-            "srfretrograde" "the" "up" "velocity"))
-     (orbit-suffixes
+    ((orbit-suffixes
       (list "apoapsis" "argumentofperiapsis" "body" "eccentricity"
             "hasnextpatch" "inclination" "lan"
             "longitudeofascendingnode" "meananomalyatepoch" "name"
             "nextpatch" "periapsis" "period" "position"
             "semimajoraxis" "semiminoraxis" "transition" "trueanomaly"
-            "velocity")))
+            "velocity"))
+     (orbitable-suffixes
+      (list "altitude" "apoapsis" "body" "direction" "distance"
+            "geoposition" "hasbody" "hasobt" "hasorbit" "latitude"
+            "longitude" "name" "north" "obt" "patches" "periapsis"
+            "position" "prograde" "retrograde" "ship" "srfprograde"
+            "srfretrograde" "the" "up" "velocity")))
   (defvar ks-variables (delete-dups (append orbitable-suffixes orbit-suffixes))
     "List of known Kerboscript variables and structure suffixes for ks-mode."))
 
@@ -59,8 +59,6 @@
 (defvar ks-font-locks
   `(( "function \\([^ ]*\\)"        . (1 font-lock-function-name-face))
     ( "@lazyglobal off"             . font-lock-warning-face)
-    ( "\\(\\_<stage\\_>\\):"        . (1 font-lock-variable-name-face))
-    ( "\\(\\_<stage\\_>\\)[^:]"     . (1 font-lock-keyword-face))
     ( ,(ks-regexp-opt ks-functions) . font-lock-builtin-face)
     ( ,(ks-regexp-opt ks-keywords)  . font-lock-keyword-face)
     ( ,(ks-regexp-opt ks-variables) . font-lock-variable-name-face)
