@@ -13,3 +13,22 @@ Feature: Statement Blocks
       print "true".
     }
     """
+
+  Scenario: Inline else if.
+    Given the code
+    """
+    if true {
+    print "t"
+    } else if false {
+    print "f"
+    }
+    """
+    Then it should indent like
+    """
+    if true {
+      print "t"
+    } else if false {
+      print "f"
+    }
+    """
+

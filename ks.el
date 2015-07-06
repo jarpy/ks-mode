@@ -108,11 +108,11 @@
     (looking-at regexp)))
 
 (defun ks-indent-line ()
-  "FIXME."
+  "Indent a line of Kerboscript."
   (interactive)
   (let* ((indentation (ks-previous-indentation))
          (opening-brace ".*{")
-         (closing-brace ".*}")
+         (closing-brace ".*}.*")
          (indent-more
           (lambda()(setq indentation (+ indentation ks-indent))))
          (indent-less
