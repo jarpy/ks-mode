@@ -14,6 +14,6 @@ Then(/^it should indent like$/) do |example|
 #    puts '---- Result ----'
 #    puts indented_code
 #    puts '----------------'
-    raise  "But we got\n\"\"\"\n" + indented_code + "\n\"\"\"\n"
+    raise  "\b\bBut we got\n\"\"\"\n" + indented_code + "\n\"\"\"\n"
   end
 end

@@ -78,13 +78,18 @@
     (indent-line-to indent)))
 
 (defun ks-previous-indentation ()
-  "Get the indentation of the previous non-blank, non-comment line of Kerboscript."
+  "Get the indentation of the previous significant line of Kerboscript."
   (save-excursion
-    (forward-line -1)
-    (while (and (looking-at "[[:space:]]*\\(//.*\\)?$")
-                (not (bobp)))
-      (forward-line -1))
+    (ks-backward-significant-line)
     (current-indentation)))
+
+(defun ks-backward-significant-line ()
+  "Move backwards to the last non-blank, non-comment line of Kerboscript."
+  (forward-line -1)
+  (while (and (looking-at "[[:space:]]*\\(//.*\\)?$")
+              (not (bobp)))
+    (forward-line -1))
+  (current-indentation))
 
 (defun ks-indent-buffer ()
   "Indent the current buffer as Kerboscript."
@@ -113,6 +118,7 @@
   (let* ((indentation (ks-previous-indentation))
          (opening-brace ".*{")
          (closing-brace ".*}.*")
+         (blank-line "[[:space:]]*$")
          (indent-more
           (lambda()(setq indentation (+ indentation ks-indent))))
          (indent-less
@@ -120,14 +126,14 @@
          )
     (save-excursion
       (beginning-of-line)
-      (if (bobp)
-          (setq indentation 0))
-      (if (not (bobp))
-          (progn (if (ks-looking-at closing-brace)
-                     (funcall indent-less))
-                 (forward-line -1)
-                 (if (ks-looking-at opening-brace)
-                     (funcall indent-more)))))
+      (if (or (bobp)
+              (looking-at blank-line))
+          (setq indentation 0)
+        (progn (if (ks-looking-at closing-brace)
+                   (funcall indent-less))
+               (ks-backward-significant-line)
+               (if (ks-looking-at opening-brace)
+                   (funcall indent-more)))))
     (indent-line-to (max indentation 0))))
 
 ;; (defun ks-indent-line ()
