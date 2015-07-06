@@ -70,50 +70,63 @@
 (defvar ks-indent 2
   "Indentation size for ks-mode.")
 
-(defun ks-indent-line-number (line-number indent)
-  "Indent the line at LINE-NUMBER to INDENT."
+(defun ks-previous-indentation ()
+  "Get the indentation of the previous significant line of Kerboscript."
+  (save-excursion
+    (ks-backward-significant-line)
+    (current-indentation)))
+
+(defun ks-backward-significant-line ()
+  "Move backwards to the last non-blank, non-comment line of Kerboscript."
+  (forward-line -1)
+  (while (and (looking-at "[[:space:]]*\\(//.*\\)?$")
+              (not (bobp)))
+    (forward-line -1))
+  (current-indentation))
+
+(defun ks-indent-buffer ()
+  "Indent the current buffer as Kerboscript."
+  (interactive)
   (save-excursion
     (goto-char (point-min))
-    (forward-line (1- line-number))
-    (indent-line-to indent)))
+    (ks-indent-line)
+    (while (not (ks-last-line-p))
+      (forward-line)
+      (ks-indent-line))))
 
-(defun ks-previous-indentation ()
-  "Get the indentation of the previous non-blank, non-comment line of Kerboscript."
+(defun ks-last-line-p ()
+  "Is this the last line?"
   (save-excursion
-    (forward-line -1)
-    (while (and (looking-at "[[:space:]]*\\(//.*\\)?$")
-                (not (bobp)))
-      (forward-line -1))
-    (current-indentation)))
+    (end-of-line)
+    (= (point) (point-max))))
+
+(defun ks-looking-at (regexp)
+  "Look for REGEXP on this line, ignoring traling space and comments."
+  (let ((regexp (concat regexp "[[:space:]]*\\(//.*\\)?$")))
+    (looking-at regexp)))
 
 (defun ks-indent-line ()
   "Indent a line of Kerboscript."
-  (let ((indentation (ks-previous-indentation))
-        (significant-earlier-line nil)
-        (opening-brace ".*{[[:space:]]*\\(//.*\\)?$")
-        (closing-brace ".*}")
-        (statement-end ".*\\.[[:space:]]*\\(//.*\\)?$")
-        (blank-line "[[:space:]]*$"))
+  (interactive)
+  (let* ((indentation (ks-previous-indentation))
+         (opening-brace ".*{")
+         (closing-brace ".*}.*")
+         (blank-line "[[:space:]]*$")
+         (indent-more
+          (lambda()(setq indentation (+ indentation ks-indent))))
+         (indent-less
+          (lambda()(setq indentation (- indentation ks-indent)))))
     (save-excursion
       (beginning-of-line)
-      (if (looking-at closing-brace)
-          (setq indentation (- indentation ks-indent))))
-    (save-excursion
-      (while (not significant-earlier-line)
-        (forward-line -1)
-        (if (looking-at opening-brace)
-            (progn
-              (setq indentation (+ indentation ks-indent))
-              (setq significant-earlier-line t)))
-        (if (looking-at statement-end)
-            (setq significant-earlier-line t))
-        (if (bobp)
-            (progn
-              (setq indentation 0)
-              (setq significant-earlier-line t)))))
-    (if (looking-at blank-line)
-        (indent-line-to 0)
-      (indent-line-to (max indentation 0)))))
+      (if (or (bobp)
+              (looking-at blank-line))
+          (setq indentation 0)
+        (progn (if (ks-looking-at closing-brace)
+                   (funcall indent-less))
+               (ks-backward-significant-line)
+               (if (ks-looking-at opening-brace)
+                   (funcall indent-more)))))
+    (indent-line-to (max indentation 0))))
 
 (define-derived-mode ks-mode fundamental-mode "ks"
   "A major mode for editing Kerboscript files."
