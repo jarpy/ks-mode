@@ -102,16 +102,16 @@
     (end-of-line)
     (= (point) (point-max))))
 
-(defun ks-looking-at ()
-  "Like \"looking-at\", but ignore Kerboscript comments."
-  
-  )
+(defun ks-looking-at (regexp)
+  "Look for REGEXP on this line, ignoring traling space and comments."
+  (let ((regexp (concat regexp "[[:space:]]*\\(//.*\\)?$")))
+    (looking-at regexp)))
 
 (defun ks-indent-line ()
   "FIXME."
   (interactive)
   (let* ((indentation (ks-previous-indentation))
-         (opening-brace ".*{[[:space:]]*\\(//.*\\)?$")
+         (opening-brace ".*{")
          (closing-brace ".*}")
          (indent-more
           (lambda()(setq indentation (+ indentation ks-indent))))
