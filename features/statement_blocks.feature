@@ -32,3 +32,20 @@ Feature: Statement Blocks
     }
     """
 
+
+  Scenario: Nested statement block indent nicely.
+    Given the code
+    """
+    {
+    {
+    }
+    }
+    """
+    Then it should indent like
+    """
+    {
+      {
+      }
+    }
+    """
+
