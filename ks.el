@@ -102,6 +102,11 @@
     (end-of-line)
     (= (point) (point-max))))
 
+(defun ks-looking-at ()
+  "Like \"looking-at\", but ignore Kerboscript comments."
+  
+  )
+
 (defun ks-indent-line ()
   "FIXME."
   (interactive)
@@ -118,10 +123,10 @@
       (if (bobp)
           (setq indentation 0))
       (if (not (bobp))
-          (progn (if (looking-at closing-brace)
+          (progn (if (ks-looking-at closing-brace)
                      (funcall indent-less))
                  (forward-line -1)
-                 (if (looking-at opening-brace)
+                 (if (ks-looking-at opening-brace)
                      (funcall indent-more)))))
     (indent-line-to (max indentation 0))))
 
