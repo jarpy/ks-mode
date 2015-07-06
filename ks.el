@@ -86,8 +86,25 @@
       (forward-line -1))
     (current-indentation)))
 
+(defun ks-indent-buffer ()
+  "Indent the current buffer as Kerboscript."
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (ks-indent-line)
+    (while (not (ks-last-line-p))
+      (forward-line)
+      (ks-indent-line))))
+
+(defun ks-last-line-p ()
+  "Is this the last line?"
+  (save-excursion
+    (end-of-line)
+    (= (point) (point-max))))
+
 (defun ks-indent-line ()
   "Indent a line of Kerboscript."
+  (interactive)
   (let ((indentation (ks-previous-indentation))
         (significant-earlier-line nil)
         (opening-brace ".*{[[:space:]]*\\(//.*\\)?$")
@@ -109,7 +126,6 @@
             (setq significant-earlier-line t))
         (if (bobp)
             (progn
-              (setq indentation 0)
               (setq significant-earlier-line t)))))
     (if (looking-at blank-line)
         (indent-line-to 0)
