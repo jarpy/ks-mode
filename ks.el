@@ -103,33 +103,56 @@
     (= (point) (point-max))))
 
 (defun ks-indent-line ()
-  "Indent a line of Kerboscript."
+  "FIXME."
   (interactive)
-  (let ((indentation (ks-previous-indentation))
-        (significant-earlier-line nil)
-        (opening-brace ".*{[[:space:]]*\\(//.*\\)?$")
-        (closing-brace ".*}")
-        (statement-end ".*\\.[[:space:]]*\\(//.*\\)?$")
-        (blank-line "[[:space:]]*$"))
+  (let* ((indentation (ks-previous-indentation))
+         (opening-brace ".*{[[:space:]]*\\(//.*\\)?$")
+         (closing-brace ".*}")
+         (indent-more
+          (lambda()(setq indentation (+ indentation ks-indent))))
+         (indent-less
+          (lambda()(setq indentation (- indentation ks-indent))))
+         )
     (save-excursion
       (beginning-of-line)
-      (if (looking-at closing-brace)
-          (setq indentation (- indentation ks-indent))))
-    (save-excursion
-      (while (not significant-earlier-line)
-        (forward-line -1)
-        (if (looking-at opening-brace)
-            (progn
-              (setq indentation (+ indentation ks-indent))
-              (setq significant-earlier-line t)))
-        (if (looking-at statement-end)
-            (setq significant-earlier-line t))
-        (if (bobp)
-            (progn
-              (setq significant-earlier-line t)))))
-    (if (looking-at blank-line)
-        (indent-line-to 0)
-      (indent-line-to (max indentation 0)))))
+      (if (bobp)
+          (setq indentation 0))
+      (if (not (bobp))
+          (progn (if (looking-at closing-brace)
+                     (funcall indent-less))
+                 (forward-line -1)
+                 (if (looking-at opening-brace)
+                     (funcall indent-more)))))
+    (indent-line-to (max indentation 0))))
+
+;; (defun ks-indent-line ()
+;;   "Indent a line of Kerboscript."
+;;   (interactive)
+;;   (let ((indentation (ks-previous-indentation))
+;;         (significant-earlier-line nil)
+;;         (opening-brace ".*{[[:space:]]*\\(//.*\\)?$")
+;;         (closing-brace ".*}")
+;;         (statement-end ".*\\.[[:space:]]*\\(//.*\\)?$")
+;;         (blank-line "[[:space:]]*$"))
+;;     (save-excursion
+;;       (beginning-of-line)
+;;       (if (looking-at closing-brace)
+;;           (setq indentation (- indentation ks-indent))))
+;;     (save-excursion
+;;       (while (not significant-earlier-line)
+;;         (forward-line -1)
+;;         (if (looking-at opening-brace)
+;;             (progn
+;;               (setq indentation (+ indentation ks-indent))
+;;               (setq significant-earlier-line t)))
+;;         (if (looking-at statement-end)
+;;             (setq significant-earlier-line t))
+;;         (if (bobp)
+;;             (progn
+;;               (setq significant-earlier-line t)))))
+;;     (if (looking-at blank-line)
+;;         (indent-line-to 0)
+;;       (indent-line-to (max indentation 0)))))
 
 (define-derived-mode ks-mode fundamental-mode "ks"
   "A major mode for editing Kerboscript files."
