@@ -1,6 +1,6 @@
 Feature: Statement Blocks
 
-  Scenario: Multi-line statement block
+  Scenario: Statement blocks get indented contents.
     Given the code
     """
     if true {
@@ -14,7 +14,7 @@ Feature: Statement Blocks
     }
     """
 
-  Scenario: Inline else if.
+  Scenario: Inline else-if aligns correctly.
     Given the code
     """
     if true {
@@ -33,7 +33,7 @@ Feature: Statement Blocks
     """
 
 
-  Scenario: Nested statement block indent nicely.
+  Scenario: Nested statement blocks get nested indent.
     Given the code
     """
     {
