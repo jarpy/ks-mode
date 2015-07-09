@@ -32,3 +32,17 @@ Feature: Statement Blocks
 
     }
     """
+
+  Scenario: Header comments do not affect indentation
+    Given the code
+    """
+    // Comments are nice, but should not mess up indentation.
+
+    @LAZYGLOBAL off.
+    """
+    Then it should indent like
+    """
+    // Comments are nice, but should not mess up indentation.
+
+    @LAZYGLOBAL off.
+    """
