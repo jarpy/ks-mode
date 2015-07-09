@@ -123,16 +123,12 @@
     (= (point) (point-max))))
 
 (defun ks-looking-at (regexp)
-  (let* ((line (thing-at-point 'line))
-         (freg (concat regexp "[[:space:]]*\\(//.*\\)?$")))
-    (if (string-match "[[:space:]]*//" line)
-        (setq line (substring line 0 (string-match "[[:space:]]*//" line))))
-    (string-match freg line)))
-
-;; (defun ks-looking-at (regexp)
-;;   "Look for REGEXP on this line, ignoring traling space and comments."
-;;   (let ((regexp (concat regexp "[[:space:]]*\\(//.*\\)?$")))
-;;     (looking-at regexp)))
+  "Look for REGEXP on this line, ignoring traling space and comments."
+  (let ((line (thing-at-point 'line))
+        (comment "[[:space:]]*//"))
+    (if (string-match comment line)
+        (setq line (substring line 0 (string-match comment line))))
+    (string-match regexp line)))
 
 (defun ks-indent-line ()
   "Indent a line of Kerboscript."
