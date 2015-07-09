@@ -71,7 +71,7 @@
 (defun ks-blank-line-p ()
   (save-excursion
     (beginning-of-line)
-    (ks-looking-at "")))
+    (looking-at "[[:space:]]*\\(//.*\\)?$")))
 
 (defun ks-previous-indentation ()
   "Get the indentation of the previous significant line of Kerboscript."
@@ -94,7 +94,7 @@
     (beginning-of-line)
     (if (ks-blank-line-p)
         nil
-      (not (ks-looking-at ".*\\([.{}]\\)")))))
+      (not (ks-looking-at ".*[.{}]")))))
 
 (defun ks-unterminated-previous-line-p ()
   "Is the previous line of Kerboscript unterminated?"
@@ -123,9 +123,16 @@
     (= (point) (point-max))))
 
 (defun ks-looking-at (regexp)
-  "Look for REGEXP on this line, ignoring traling space and comments."
-  (let ((regexp (concat regexp "[[:space:]]*\\(//.*\\)?$")))
-    (looking-at regexp)))
+  (let* ((line (thing-at-point 'line))
+         (freg (concat regexp "[[:space:]]*\\(//.*\\)?$")))
+    (if (string-match "[[:space:]]*//" line)
+        (setq line (substring line 0 (string-match "[[:space:]]*//" line))))
+    (string-match freg line)))
+
+;; (defun ks-looking-at (regexp)
+;;   "Look for REGEXP on this line, ignoring traling space and comments."
+;;   (let ((regexp (concat regexp "[[:space:]]*\\(//.*\\)?$")))
+;;     (looking-at regexp)))
 
 (defun ks-indent-line ()
   "Indent a line of Kerboscript."

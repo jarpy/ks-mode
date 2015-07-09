@@ -1,6 +1,7 @@
+
 Feature: Continuation Lines
 
-  Scenario: Multi-line statement.
+  Scenario: Multi-line statements get a hanging indent.
     Given the code
     """
     parameter
@@ -33,4 +34,3 @@ Feature: Continuation Lines
 
     stage.
     """
-
