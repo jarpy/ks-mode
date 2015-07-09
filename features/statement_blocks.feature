@@ -18,17 +18,17 @@ Feature: Statement Blocks
     Given the code
     """
     if true {
-    print "t"
+    print "t".
     } else if false {
-    print "f"
+    print "f".
     }
     """
     Then it should indent like
     """
     if true {
-      print "t"
+      print "t".
     } else if false {
-      print "f"
+      print "f".
     }
     """
 

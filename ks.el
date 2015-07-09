@@ -82,6 +82,22 @@
     (forward-line -1))
   (current-indentation))
 
+(defun ks-unterminated-line-p ()
+  "Is the current line of Kerboscript unterminated?"
+  (save-excursion
+    (beginning-of-line)
+    (not (ks-looking-at ".*\\([.{}]\\)"))))
+
+(defun ks-unterminated-previous-line-p ()
+  "Is the previous line of Kerboscript unterminated?"
+  (save-excursion
+    (beginning-of-line)
+    (if (bobp)
+        nil
+      (progn
+        (ks-backward-significant-line)
+        (ks-unterminated-line-p)))))
+
 (defun ks-indent-buffer ()
   "Indent the current buffer as Kerboscript."
   (interactive)
@@ -123,7 +139,15 @@
                    (funcall indent-less))
                (ks-backward-significant-line)
                (if (ks-looking-at opening-brace)
-                   (funcall indent-more)))))
+                   (funcall indent-more))
+               ; Hanging indent.
+               (if (and (ks-unterminated-line-p)
+                        (not (ks-unterminated-previous-line-p)))
+                   (funcall indent-more))
+               ; Recover from hanging indent.
+               (if (and (not (ks-unterminated-line-p))
+                        (ks-unterminated-previous-line-p))
+                   (funcall indent-less)))))
     (indent-line-to (max indentation 0))))
 
 (define-derived-mode ks-mode fundamental-mode "ks"
