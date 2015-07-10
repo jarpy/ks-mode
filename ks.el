@@ -2,6 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 
+
 (if (featurep 'ks) (unload-feature 'ks))
 
 (defvar ks-mode-syntax-table
@@ -123,17 +124,19 @@
     (= (point) (point-max))))
 
 (defun ks-looking-at (regexp)
-  "Look for REGEXP on this line, ignoring traling space and comments."
+  "Look for REGEXP on this line, ignoring strings and comments."
   (let ((line (thing-at-point 'line))
-        (comment "[[:space:]]*//"))
-    (if (string-match comment line)
-        (setq line (substring line 0 (string-match comment line))))
+        (string "\"\[^\"\]*\"")
+        (comment "[[:space:]]*//.*"))
+    (setq line (replace-regexp-in-string string "" line))
+    (setq line (replace-regexp-in-string comment "" line))
     (string-match regexp line)))
 
 (defun ks-indent-line ()
   "Indent a line of Kerboscript."
   (interactive)
-  (let* ((indentation (ks-previous-indentation))
+  (let* ((target-line (thing-at-point 'line))
+         (indentation (ks-previous-indentation))
          (opening-brace ".*{")
          (closing-brace ".*}.*")
          (indent-more
@@ -151,11 +154,13 @@
                    (funcall indent-more))
                ; Hanging indent.
                (if (and (ks-unterminated-line-p)
-                        (not (ks-unterminated-previous-line-p)))
+                        (not (ks-unterminated-previous-line-p))
+                        (not (string-match opening-brace target-line)))
                    (funcall indent-more))
                ; Recover from hanging indent.
                (if (and (not (ks-unterminated-line-p))
-                        (ks-unterminated-previous-line-p))
+                        (ks-unterminated-previous-line-p)
+                        (not (ks-looking-at opening-brace)))
                    (funcall indent-less)))))
     (indent-line-to (max indentation 0))))
 

@@ -32,7 +32,6 @@ Feature: Statement Blocks
     }
     """
 
-
   Scenario: Nested statement blocks get nested indent.
     Given the code
     """
@@ -49,3 +48,18 @@ Feature: Statement Blocks
     }
     """
 
+    Scenario: K&R style blocks are OK too... I guess :(
+      Given the code
+      """
+      function boom
+      {
+      stage.
+      }
+      """
+      Then it should indent like
+      """
+      function boom
+      {
+        stage.
+      }
+      """
