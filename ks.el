@@ -145,7 +145,7 @@
           (lambda()(setq indentation (- indentation ks-indent)))))
     (save-excursion
       (beginning-of-line)
-      (if (or (bobp) (ks-blank-line-p))
+      (if (or (bobp) (looking-at "[[:space:]]*$"))
           (setq indentation 0)
         (progn (if (ks-looking-at closing-brace)
                    (funcall indent-less))
