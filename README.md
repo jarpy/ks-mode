@@ -32,8 +32,8 @@ If you use vanilla Emacs, you might want something like this in your
 (require 'ks)
 ```
 
-If you use [Emacs Prelude](http://batsov.com/prelude/) (I love it), just drop `ks.el` in
-`~/.emacs.d/personal`.
+If you use [Emacs Prelude](http://batsov.com/prelude/) (I love it), just drop
+`ks.el` in `~/.emacs.d/personal`.
 
 Perhaps one day, ks-mode will be a MELPA package, and this section will not be
 needed.
@@ -44,6 +44,15 @@ The default indentation size is 2 spaces. You can change it with:
 ```elisp
 (setq ks-indent 4)
 ```
+
+Communication
+-------------
+Please get in touch if you have any trouble, have a feature request, or just
+want to say 'hi' to a fellow _Kerbal Space Programmer_.
+
+`toby@jarpy.net` or `@jarpy` on Twitter.
+
+If you get any value from ks-mode, then you've made my day.
 
 Contributing
 ------------
