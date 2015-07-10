@@ -175,5 +175,13 @@
   (setq-local indent-line-function 'ks-indent-line)
   (if (featurep 'rainbow-delimiters) (rainbow-delimiters-mode-enable)))
 
+(defun ks-send-telnet (string)
+  "Transmit STRING to the kOS processor via Telnet."
+    (open-network-stream "kos" nil "localhost" "3333")
+    (process-send-string "kos" string)
+    )
+
+(ks-send-telnet "tehbob zero. hai!")
+
 (provide 'ks)
 ;;; ks.el ends here
