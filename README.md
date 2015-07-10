@@ -1,5 +1,6 @@
 ks-mode
 =======
+![ks-mode screenshot](screenshots/ks-mode.png)
 ks-mode is an Emacs major mode for editing Kerboscript, the language of the
 [kOS Scriptable Autopilot](http://ksp-kos.github.io/KOS_DOC/) for
 [Kerbal Space Program](https://kerbalspaceprogram.com/en/).

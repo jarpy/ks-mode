@@ -49,8 +49,12 @@
             "geoposition" "hasbody" "hasobt" "hasorbit" "latitude"
             "longitude" "name" "north" "obt" "patches" "periapsis"
             "position" "prograde" "retrograde" "ship" "srfprograde"
-            "srfretrograde" "the" "up" "velocity")))
-  (defvar ks-variables (delete-dups (append orbitable-suffixes orbit-suffixes))
+            "srfretrograde" "the" "up" "velocity"))
+     (orbitable-velocity-suffixes
+      (list "orbit" "surface")))
+  (defvar ks-variables
+    (delete-dups (append orbit-suffixes orbitable-suffixes
+                         orbitable-velocity-suffixes))
     "List of known Kerboscript variables and structure suffixes for ks-mode."))
 
 (defun ks-regexp-opt (keywords)
