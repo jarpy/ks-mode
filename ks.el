@@ -10,7 +10,13 @@
     (modify-syntax-entry ?/ ". 124b" st)
     (modify-syntax-entry ?\n "> b" st)
     st)
-  "Syntax table for `ks-mode'.")
+  "Syntax table for ks-mode.")
+
+(defvar ks-mode-map
+  (let ((keymap (make-sparse-keymap)))
+    (define-key keymap (kbd "RET") 'reindent-then-newline-and-indent)
+    keymap)
+  "Keymap for ks-mode.")
 
 (defvar ks-keywords
   (list "add" "all" "and" "at" "batch" "break" "clearscreen" "compile"
