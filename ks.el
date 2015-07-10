@@ -149,7 +149,7 @@
           (lambda()(setq indentation (- indentation ks-indent)))))
     (save-excursion
       (beginning-of-line)
-      (if (or (bobp) (looking-at "[[:space:]]*$"))
+      (if (bobp)
           (setq indentation 0)
         (progn (if (ks-looking-at closing-brace)
                    (funcall indent-less))
@@ -179,10 +179,3 @@
 
 (provide 'ks)
 ;;; ks.el ends here
-
-
-
-
-
-
-

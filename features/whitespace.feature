@@ -11,7 +11,7 @@ Feature: Statement Blocks
     Then it should indent like
     """
     {
-
+      
     }
     """
 
@@ -27,9 +27,9 @@ Feature: Statement Blocks
     Then it should indent like
     """
     if true {
-
+      
       stage.
-
+      
     }
     """
 
