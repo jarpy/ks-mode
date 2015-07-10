@@ -20,7 +20,7 @@ Planned Features
 
 Installation
 ------------
-Clone this repository, or just download [ks.el](blob/master/ks.el).
+Clone this repository, or just download [ks.el](ks.el).
 
 If you use vanilla Emacs, you might want something like this in your
 `.emacs` file:
