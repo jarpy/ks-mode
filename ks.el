@@ -175,5 +175,14 @@
   (setq-local indent-line-function 'ks-indent-line)
   (if (featurep 'rainbow-delimiters) (rainbow-delimiters-mode-enable)))
 
+(add-to-list 'auto-mode-alist '("\\.ks\\'" . ks-mode))
+
 (provide 'ks)
 ;;; ks.el ends here
+
+
+
+
+
+
+
