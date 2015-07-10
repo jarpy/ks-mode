@@ -25,4 +25,3 @@ Feature: Comments.
       // Blow up.
     }
     """
-  
