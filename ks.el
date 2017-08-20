@@ -177,6 +177,12 @@
 (define-derived-mode ks-mode fundamental-mode "ks"
   "A major mode for editing Kerboscript files."
   :syntax-table ks-mode-syntax-table
+
+  ;; Defining and creating buffer-local variables
+  (set (make-local-variable 'comment-start) "// ")
+  (set (make-local-variable 'comment-end) "")
+  (set (make-local-variable 'comment-start-skip) "// *")
+
   (setq-local font-lock-defaults '(ks-font-locks nil t))
   (setq-local indent-line-function 'ks-indent-line)
   (if (featurep 'rainbow-delimiters) (rainbow-delimiters-mode-enable)))
