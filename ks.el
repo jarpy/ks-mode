@@ -19,13 +19,14 @@
   "Keymap for ks-mode.")
 
 (defvar ks-keywords
-  (list "add" "all" "and" "at" "batch" "break" "clearscreen" "compile"
-        "copy" "declare" "delete" "deploy" "do" "edit" "else" "file"
-        "for" "from" "function" "global" "if" "in" "is" "list" "local"
-        "lock" "log" "not" "off" "or" "on" "parameter" "preserve"
-        "print" "reboot" "remove" "rename" "return" "run" "set"
-        "shutdown" "step" "switch" "then" "to" "toggle" "unlock"
-        "unset" "until" "volume" "wait" "when")
+  (list "add" "all" "and" "at" "batch" "break" "cd" "clearscreen" "compile"
+        "copy" "copypath" "create" "createdir" "declare" "delete" "deletepath"
+        "deploy" "do" "edit" "else" "eta" "exists" "file" "for" "from" "function"
+        "global" "heading" "if" "in" "is" "list" "local" "lock" "log" "movepath"
+        "not" "off" "or" "on" "open" "parameter" "preserve" "print" "readjson"
+        "reboot" "remove" "rename" "return" "run" "set" "shutdown" "stage"
+        "step" "switch" "then" "to" "toggle" "unlock" "unset" "until" "volume"
+        "wait" "when" "writejson")
   "List of Kerboscript keywords for ks-mode.")
 
 (defvar ks-types
