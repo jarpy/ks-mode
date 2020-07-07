@@ -136,12 +136,22 @@
 
 (defun ks-looking-at (regexp)
   "Look for REGEXP on this line, ignoring strings and comments."
+  (> (ks-count regexp) 0))
+
+  (defun ks-count (regexp)
+	"Count REGEXP on this line, ignoring strings and comments."
   (let ((line (thing-at-point 'line))
         (string "\"\[^\"\]*\"")
         (comment "[[:space:]]*//.*"))
     (setq line (replace-regexp-in-string string "" line))
     (setq line (replace-regexp-in-string comment "" line))
-    (string-match regexp line)))
+	(let ((count 0)
+		  (pos 0))
+	  (while (string-match regexp line pos)
+		(setf pos (match-end 0))
+		(incf count))
+	  count)))
+
 
 (defun ks-indent-line ()
   "Indent a line of Kerboscript."
@@ -158,10 +168,10 @@
       (beginning-of-line)
       (if (bobp)
           (setq indentation 0)
-        (progn (if (ks-looking-at closing-brace)
+        (progn (if (> (ks-count closing-brace) (ks-count opening-brace))
                    (funcall indent-less))
                (ks-backward-significant-line)
-               (if (ks-looking-at opening-brace)
+               (if (> (ks-count opening-brace) (ks-count closing-brace))
                    (funcall indent-more))
                ; Hanging indent.
                (if (and (ks-unterminated-line-p)
