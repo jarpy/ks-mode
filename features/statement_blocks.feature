@@ -48,18 +48,18 @@ Feature: Statement Blocks
     }
     """
 
-    Scenario: K&R style blocks are OK too... I guess :(
-      Given the code
-      """
-      function boom
-      {
+  Scenario: K&R style blocks are OK too... I guess :(
+    Given the code
+    """
+    function boom
+    {
+    stage.
+    }
+    """
+    Then it should indent like
+    """
+    function boom
+    {
       stage.
-      }
-      """
-      Then it should indent like
-      """
-      function boom
-      {
-        stage.
-      }
-      """
+    }
+    """
